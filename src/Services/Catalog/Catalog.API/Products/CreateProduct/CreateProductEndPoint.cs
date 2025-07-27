@@ -1,8 +1,4 @@
-﻿using Carter;
-using Mapster;
-using MediatR;
-
-namespace Catalog.API.Products.CreateProduct
+﻿namespace Catalog.API.Products.CreateProduct
 {
 
     public record CreateProductRequest(string Name, List<string> Categotry, string Description, string ImageFile, decimal Price);
@@ -21,16 +17,14 @@ namespace Catalog.API.Products.CreateProduct
 
                     var result = await sender.Send(command);
 
-                    var response = result.Adapt<CreateProductCommand>();
+                    var response = result.Adapt<CreateProductResponse>();
 
                     return Results.Created($"/products/{response.Id}", response);
                 })
-                .WithName("CreateProduct)
+                .WithName("CreateProduct") // Fixed missing closing quote  
                 .Produces<CreateProductResponse>(StatusCodes.Status400BadRequest)
                 .WithSummary("Create Product")
                 .WithDescription("Create Product");
-
-           
         }
     }
 }
